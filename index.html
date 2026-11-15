@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#09090b" />
+  <meta name="description" content="Prime SMC - Prop Trading & Liquidity" />
+  <title>PRIME | TRADING</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syncopate:wght@700&display=swap');
+
+    :root {
+      --bg: #050505;
+      --surface: #0f1014;
+      --primary: #ffffff; /* White - Clean, premium look */
+      --text: #f4f4f5;
+      --muted: #71717a;
+    }
+
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--bg);
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 30px 30px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* Animated background glow */
+    body::before {
+      content: "";
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      width: 300px;
+      height: 300px;
+      background: var(--primary);
+      filter: blur(150px);
+      border-radius: 50%;
+      opacity: 0.1;
+      transform: translateX(-50%);
+      pointer-events: none;
+      animation: pulse-bg 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse-bg {
+      0% { opacity: 0.05; transform: translateX(-50%) scale(1); }
+      100% { opacity: 0.15; transform: translateX(-50%) scale(1.1); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 420px;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Radar Avatar */
+    .avatar-container {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .avatar-pulse {
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      animation: radar 2s linear infinite;
+      opacity: 0;
+    }
+    
+    .avatar-pulse:nth-child(2) {
+      animation-delay: 1s;
+    }
+
+    @keyframes radar {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      background: var(--surface);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Glitch Title */
+    h1 {
+      font-family: 'Syncopate', sans-serif;
+      font-size: 28px;
+      margin: 0 0 5px 0;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      color: #fff;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 30px;
+      font-weight: 700;
+    }
+
+    /* Terminal Window */
+    .terminal {
+      width: 100%;
+      background: rgba(10, 10, 12, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 30px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: left;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
+    }
+
+    .terminal-header {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot.red { background: #555; }
+    .dot.yellow { background: #888; }
+    .dot.green { background: #ccc; }
+
+    .line {
+      margin: 5px 0;
+      display: flex;
+      gap: 8px;
+    }
+
+    .prefix { color: #fff; font-weight: bold; }
+    .highlight { color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
+
+    /* Typing cursor */
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 15px;
+      background: #fff;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* Neon CTA Button */
+    .cta-wrapper {
+      width: 100%;
+      position: relative;
+    }
+
+    .cta {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      height: 64px;
+      background: #ffffff;
+      color: #000000;
+      text-decoration: none;
+      font-size: 18px;
+      font-family: 'Syncopate', sans-serif;
+      font-weight: 700;
+      border-radius: 12px;
+      border: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+
+    .cta:hover, .cta:active {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(0,0,0,0.1);
+      background: #e5e5e5;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 20px;
+      padding: 0 10px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .stat-label {
+      font-size: 9px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <div class="avatar-container">
+      <div class="avatar-pulse"></div>
+      <div class="avatar-pulse"></div>
+      <img class="avatar" src="https://cdn.phototourl.com/member/2026-10-20-393f98e5-28fd-42da-a95b-29c8ec88b567.jpg" alt="Trader">
+    </div>
+
+    <h1>PRIME</h1>
+    <div class="subtitle">Smart Money Concepts</div>
+
+    <div class="terminal">
+      <div class="terminal-header">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+      </div>
+      <div class="line">
+        <span class="prefix">~</span>
+        <span>Scanning liquidity pools... [OK]</span>
+      </div>
+      <div class="line">
+        <span class="prefix">~</span>
+        <span>Target: <span class="highlight">Prop Firm Funding</span></span>
+      </div>
+      <div class="line">
+        <span class="prefix">></span>
+        <span id="typewriter"></span><span class="cursor"></span>
+      </div>
+    </div>
+
+    <div class="cta-wrapper">
+      <a href="https://t.me/+jt32vqQUyrpmODQy" class="cta">
+        <span>VIP KANAL</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </div>
+
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-value">> 500k</span>
+        <span class="stat-label">Funded ($)</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">1:4</span>
+        <span class="stat-label">Avg RR</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">LIVE</span>
+        <span class="stat-label">Setups</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const text = "Retail ist Liquidität. Werde zum Smart Money.";
+    const element = document.getElementById('typewriter');
+    let i = 0;
+
+    function typeWriter() {
+      if (i < text.length) {
+        element.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 50); // Typing speed
+      } else {
+        // Add highlight class to the last words
+        element.innerHTML = 'Retail ist Liquidität. <span class="highlight">Werde zum Smart Money.</span>';
+      }
+    }
+
+    setTimeout(typeWriter, 800); // Initial delay
+  </script>
+</body>
+</html>
